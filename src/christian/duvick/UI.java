@@ -4,11 +4,10 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
-
 import static christian.duvick.parsers.Parser.cleanTextContent;
 
 /**
- * This class will be a UI class (non-GUI)
+ * This class servers as a user interface class.
  */
 public class UI {
     private static UI instance;
@@ -24,11 +23,17 @@ public class UI {
     private final int GET_RANGE = 7;
     private final int SET_FILE_NAME = 8;
 
-
+    /**
+     * private constructor as this is a singleton class
+     */
     private UI() {
         programSystem = ProgramSystem.getInstance();
     }
 
+    /**
+     * Gets the instance of the UI class.
+     * @return UI
+     */
     public static UI getInstance() {
         if (instance == null) {
             instance = new UI();
@@ -36,6 +41,11 @@ public class UI {
         return instance;
     }
 
+    /**
+     * This method takes the input and processes the option selected and calling the
+     * corresponding methods.
+     * @throws FileNotFoundException
+     */
     public void menu() throws FileNotFoundException {
         getOptions();
         System.out.println();
@@ -100,7 +110,7 @@ public class UI {
         }
     }
 
-    private void setFileName() {
+    void setFileName() {
         System.out.println("Enter the file name (must be located within /data_sets folder)");
         System.out.print("data_sets/");
         String file = cleanTextContent(scanner.nextLine());
@@ -150,6 +160,10 @@ public class UI {
         System.out.println(programSystem.getMedian());
     }
 
+    /**
+     * The purpose of this method is to print the results
+     * @param values LinkedList returned by some of the above methods
+     */
     public void printResults(LinkedList<Double> values) {
         System.out.print("Results: ");
         Iterator<Double> iterator = values.iterator();
@@ -164,6 +178,9 @@ public class UI {
 //        System.out.println();
     }
 
+    /**
+     * This method presents all possible options.
+     */
     private void getOptions() {
         System.out.println();
         System.out.println("Press " + EXIT + " to exit the program.");
@@ -175,10 +192,5 @@ public class UI {
         System.out.println("Press " + GET_MEAN + " to get the mean.");
         System.out.println("Press " + GET_RANGE + " to get the range.");
         System.out.println("Press " + SET_FILE_NAME + " to set the file.");
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        UI.getInstance().setFileName();
-        UI.getInstance().menu();
     }
 }
