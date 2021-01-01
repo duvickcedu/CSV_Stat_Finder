@@ -9,14 +9,21 @@ import java.util.Scanner;
 import java.util.concurrent.*;
 
 /**
- * This class will contain all of the given stats for a file.
+ * This class has all of the methods that do stat collecting on the given file.
  */
 public class Stats {
     private static Stats instance;
 
+    /**
+     * Private constructor to follow singleton pattern.
+     */
     private Stats() {
     }
 
+    /**
+     * gets the instance of the class
+     * @return Stats
+     */
     public static Stats getInstance() {
         if (instance == null) {
             instance = new Stats();
@@ -24,6 +31,13 @@ public class Stats {
         return instance;
     }
 
+    /**
+     * This method gets the top x amount of maximum values.
+     * @param executor used for reading through the file using multithreading
+     * @param scanner used for reading the file
+     * @param valuesToKeep the amount of values to save
+     * @return LinkedList of doubles
+     */
     public LinkedList<Double> getNMaximum(ExecutorService executor, Scanner scanner, int valuesToKeep) {
         ConcurrentLinkedQueue<Future<LinkedList<Double>>> topValues = new ConcurrentLinkedQueue<>();
         String line;
@@ -48,6 +62,13 @@ public class Stats {
         return values;
     }
 
+    /**
+     * This method gets the top x amount of minimum values.
+     * @param executor used for reading through the file using multithreading
+     * @param scanner used for reading the file
+     * @param valuesToKeep the amount of values to save
+     * @return LinkedList of doubles
+     */
     public LinkedList<Double> getNMinimum(ExecutorService executor, Scanner scanner, int valuesToKeep) {
         ConcurrentLinkedQueue<Future<LinkedList<Double>>> topValues = new ConcurrentLinkedQueue<>();
         String line;
@@ -72,6 +93,12 @@ public class Stats {
         return values;
     }
 
+    /**
+     * This method finds the range of the provided file
+     * @param executor used for reading through the file using multithreading
+     * @param scanner used for reading the file
+     * @return double which is the mean
+     */
     public double getRange(ExecutorService executor, Scanner scanner) {
         ConcurrentLinkedQueue<Future<LinkedList<Double>>> highLowPairs = new ConcurrentLinkedQueue<>();
         String line;
@@ -100,6 +127,12 @@ public class Stats {
         return (values.getFirst() - values.getLast());
     }
 
+    /**
+     * This method finds the mean of the provided file
+     * @param executor used for reading through the file using multithreading
+     * @param scanner used for reading the file
+     * @return double which is the mean
+     */
     public double getMean(ExecutorService executor, Scanner scanner) {
         ConcurrentLinkedQueue<Future<LinkedList<Double>>> means = new ConcurrentLinkedQueue<>();
         String line;
@@ -127,6 +160,11 @@ public class Stats {
         return mean;
     }
 
+    /**
+     * This method finds the median of the provided file
+     * @param scanner used for reading the file
+     * @return double which is the median
+     */
     public double getMedian(Scanner scanner) {
         LinkedList<Double> list = new LinkedList<>();
         while (scanner.hasNextLine()) {
@@ -150,10 +188,24 @@ public class Stats {
         return median;
     }
 
+    /**
+     * This method determines if two numbers are evenly divisible.
+     * @param number1 first number
+     * @param number2 second number
+     * @return boolean
+     */
     public boolean isEven(int number1, int number2) {
         return number1 % number2 == 0;
     }
 
+    /**
+     * This is a helper function that consolidates the futures extracted futures into one given result
+     * @param consolidated the aggregated result
+     * @param values linked list of values
+     * @param minValue lowest value
+     * @param maxValue highest value
+     * @return range
+     */
     public LinkedList<Double> consolidateRangeResults(LinkedList<Double> consolidated, LinkedList<Double> values,
                                                       double minValue, double maxValue) {
         if (values.getFirst() > maxValue) {
@@ -168,6 +220,13 @@ public class Stats {
         return consolidated;
     }
 
+    /**
+     * This is a helper function that consolidates the futures extracted futures into one given result
+     * @param consolidated the aggregated result
+     * @param values linked list of values
+     * @param valuesToKeep number of values to keep
+     * @return LinkedList of results
+     */
     public LinkedList<Double> consolidateMaxResults(LinkedList<Double> consolidated, LinkedList<Double> values, int valuesToKeep) {
         for (Double value: values) {
             if (consolidated.size() == valuesToKeep) {
@@ -183,6 +242,13 @@ public class Stats {
         return consolidated;
     }
 
+    /**
+     * This is a helper function that consolidates the futures extracted futures into one given result
+     * @param consolidated the aggregated result
+     * @param values linked list of values
+     * @param valuesToKeep number of values to keep
+     * @return LinkedList of results
+     */
     public LinkedList<Double> consolidateMinResults(LinkedList<Double> consolidated, LinkedList<Double> values, int valuesToKeep) {
         for (Double value: values) {
             if (consolidated.size() == valuesToKeep) {

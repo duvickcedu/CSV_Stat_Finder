@@ -2,6 +2,9 @@ package christian.duvick.parsers;
 
 import java.util.LinkedList;
 
+/**
+ * This class is the parser for finding mean of a file.
+ */
 public class MeanParser extends Parser<LinkedList<Double>> {
     LinkedList<Double> values = new LinkedList<>();
     String[] line;
@@ -10,8 +13,10 @@ public class MeanParser extends Parser<LinkedList<Double>> {
         this.line = line;
     }
 
-    //My issue https://www.java67.com/2016/10/10-reasons-of-javalangnumberformatexception-in-java-solution.html number 9
-    //Be careful with non-printable characters. (these can come from Excel.)
+    /**
+     * This method find the mean of the lines that are given
+     * @return LinkedList
+     */
     @Override
     public LinkedList<Double> call() {
         double total = 0;

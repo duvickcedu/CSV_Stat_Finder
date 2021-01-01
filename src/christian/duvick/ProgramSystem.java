@@ -14,15 +14,22 @@ import java.util.concurrent.*;
 public class ProgramSystem {
     private static ProgramSystem instance;
     private static Stats stats;
-    private final int NUMBER_OF_THREADS = 20;
+    private final int numberOfThreads = 20;
     private final String PATH = "Data_Sets/";
     private String fileName;
-    private int VALUES_TO_KEEP;
+    private int valuesToKeep;
 
+    /**
+     * Private constructor as this class is a singleton
+     */
     private ProgramSystem() {
         stats = Stats.getInstance();
     }
 
+    /**
+     * gets the instance of the class
+     * @return ProgramSystem
+     */
     public static ProgramSystem getInstance() {
         if (instance == null) {
             instance = new ProgramSystem();
@@ -39,26 +46,26 @@ public class ProgramSystem {
     }
 
     public void setVALUES_TO_KEEP(int VALUES_TO_KEEP) {
-        this.VALUES_TO_KEEP = VALUES_TO_KEEP;
+        this.valuesToKeep = VALUES_TO_KEEP;
     }
 
     public LinkedList<Double> getNMaximum() throws FileNotFoundException {
-        return stats.getNMaximum(Executors.newFixedThreadPool(NUMBER_OF_THREADS),
-                new Scanner(new File((PATH.concat(fileName)))), VALUES_TO_KEEP);
+        return stats.getNMaximum(Executors.newFixedThreadPool(numberOfThreads),
+                new Scanner(new File((PATH.concat(fileName)))), valuesToKeep);
     }
 
     public LinkedList<Double> getNMinimum() throws FileNotFoundException {
-        return stats.getNMinimum(Executors.newFixedThreadPool(NUMBER_OF_THREADS),
-                new Scanner(new File((PATH.concat(fileName)))), VALUES_TO_KEEP);
+        return stats.getNMinimum(Executors.newFixedThreadPool(numberOfThreads),
+                new Scanner(new File((PATH.concat(fileName)))), valuesToKeep);
     }
 
     public double getRange() throws FileNotFoundException {
-        return stats.getRange(Executors.newFixedThreadPool(NUMBER_OF_THREADS),
+        return stats.getRange(Executors.newFixedThreadPool(numberOfThreads),
                 new Scanner(new File((PATH.concat(fileName)))));
     }
 
     public double getMean() throws FileNotFoundException {
-        return stats.getMean(Executors.newFixedThreadPool(NUMBER_OF_THREADS),
+        return stats.getMean(Executors.newFixedThreadPool(numberOfThreads),
                 new Scanner(new File((PATH.concat(fileName)))));
     }
 
